@@ -9,3 +9,9 @@ obj/
 
 # OS-generated files
 .DS_Store
+
+# API keys
+/Configuration/ApiKeys.cs
+
+# Temporary build files
+*.tmp

@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 using MauiWeather_Application.Services;
 using MauiWeather_Application.ViewModels;
-using MauiWeather_Application.Services;
-using MauiWeather_Application.ViewModels;
+
+
 namespace MauiWeather_Application
 {
     public static class MauiProgram
@@ -14,6 +14,8 @@ namespace MauiWeather_Application
             builder.Services.AddTransient<MainPageViewModel>();
             builder.Services.AddTransient<MainPage>();
             builder.Services.AddSingleton<AppShell>();
+            
+            builder.Services.AddHttpClient<IWeatherService, WeatherService>();
             
             builder
                 .UseMauiApp<App>()
