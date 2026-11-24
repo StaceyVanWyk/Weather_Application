@@ -44,6 +44,39 @@
                 Text="Longitude"
                 FontAttributes="Bold" />
 
+             
+<Label
+    Text="Current Weather"
+    FontSize="24"
+    FontAttributes="Bold"
+    HorizontalOptions="Center" />
+
+<Label
+    Text="{Binding Weather.Name}"
+    FontSize="22"
+    HorizontalOptions="Center" />
+
+<Label
+    Text="{Binding Weather.Main.Temperature, StringFormat='{0:F1} °C'}"
+    FontSize="40"
+    FontAttributes="Bold"
+    HorizontalOptions="Center" />
+
+<Label
+    Text="{Binding Weather.Weather[0].Description}"
+    FontSize="18"
+    HorizontalOptions="Center" />
+
+<Label
+    Text="{Binding Weather.Main.FeelsLike, StringFormat='Feels like {0:F1} °C'}" />
+
+<Label
+    Text="{Binding Weather.Main.Humidity, StringFormat='Humidity: {0}%'}" />
+
+<Label
+    Text="{Binding Weather.Wind.Speed, StringFormat='Wind speed: {0} m/s'}" />
+   
+
             <Label
                 Text="{Binding Longitude, StringFormat='{0:F6}'}"
                 FontSize="18" />

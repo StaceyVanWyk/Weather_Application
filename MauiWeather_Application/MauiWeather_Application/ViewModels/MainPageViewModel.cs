@@ -1,6 +1,7 @@
 using MauiWeather_Application.Services;
 using System.Windows.Input;
 using MauiWeather_Application.Commands;
+using MauiWeather_Application.Models;
 
 namespace MauiWeather_Application.ViewModels;
 
@@ -8,18 +9,23 @@ public class MainPageViewModel : BaseViewModel
 {
     private bool _isLoading;
     private readonly IGeolocationService _geolocationService;
+    private readonly IWeatherService _weatherService;
+    private WeatherResponse? _weather;
 
     private double _latitude;
     private double _longitude;
     public ICommand GetLocationCommand { get; }
-    public MainPageViewModel(IGeolocationService geolocationService)
-    {
-        _geolocationService = geolocationService;
-        GetLocationCommand = new AsyncRelayCommand(
+    public MainPageViewModel(
+    IGeolocationService geolocationService,
+    IWeatherService weatherService)
+{
+    _geolocationService = geolocationService;
+    _weatherService = weatherService;
+
+    GetLocationCommand = new AsyncRelayCommand(
         GetCurrentLocationAsync,
         () => !IsLoading);
-    }
-
+}
     public double Latitude
     {
         get => _latitude;
@@ -45,7 +51,18 @@ public class MainPageViewModel : BaseViewModel
             }
         }
     }
-
+   public WeatherResponse? Weather
+{
+    get => _weather;
+    set
+    {
+        if (_weather != value)
+        {
+            _weather = value;
+            OnPropertyChanged();
+        }
+    }
+}
   public async Task GetCurrentLocationAsync()
 {
     try
@@ -59,6 +76,9 @@ public class MainPageViewModel : BaseViewModel
             Latitude = location.Latitude;
             Longitude = location.Longitude;
         }
+        Weather = await _weatherService.GetWeatherAsync(
+                    Latitude,
+                    Longitude);
     }
     finally
     {
