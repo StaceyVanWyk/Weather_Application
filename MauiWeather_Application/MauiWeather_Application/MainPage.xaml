@@ -3,86 +3,222 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="MauiWeather_Application.MainPage"
-    Title="Weather">
+    Title="Weather"
+    BackgroundColor="#F5F7FA">
 
     <ScrollView>
         <VerticalStackLayout
-            Padding="25"
-            Spacing="20"
-            VerticalOptions="Center">
+            Padding="28"
+            Spacing="22"
+            MaximumWidthRequest="900"
+            HorizontalOptions="Center">
 
-            <Label
-                Text="Weather App"
-                FontSize="30"
-                FontAttributes="Bold"
-                HorizontalOptions="Center" />
+            <!-- Header -->
+            <Grid ColumnDefinitions="*,Auto">
 
-            <Label
-                Text="Get your current location"
-                FontSize="18"
-                HorizontalOptions="Center" />
+                <VerticalStackLayout Spacing="4">
+                    <Label
+                        Text="Weather"
+                        FontSize="28"
+                        FontAttributes="Bold"
+                        TextColor="#1E293B" />
 
+                    <Label
+                        Text="Current conditions in your area"
+                        FontSize="14"
+                        TextColor="#64748B" />
+                </VerticalStackLayout>
+
+                <Label
+                    Grid.Column="1"
+                    Text="LOCAL WEATHER"
+                    FontSize="11"
+                    FontAttributes="Bold"
+                    TextColor="#64748B"
+                    VerticalOptions="Center" />
+
+            </Grid>
+
+            <!-- Location action -->
             <Button
                 Text="Get My Location"
                 Command="{Binding GetLocationCommand}"
-                HorizontalOptions="Fill" />
+                BackgroundColor="#2563EB"
+                TextColor="White"
+                FontSize="15"
+                FontAttributes="Bold"
+                CornerRadius="10"
+                HeightRequest="50"
+                HorizontalOptions="Start"
+                WidthRequest="200" />
 
+            <!-- Loading -->
             <ActivityIndicator
                 IsRunning="{Binding IsLoading}"
                 IsVisible="{Binding IsLoading}"
+                Color="#2563EB"
+                HorizontalOptions="Start" />
+
+            <!-- Main weather panel -->
+            <Border
+                BackgroundColor="White"
+                Stroke="#E2E8F0"
+                StrokeThickness="1"
+                Padding="28">
+
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="16" />
+                </Border.StrokeShape>
+
+                <VerticalStackLayout Spacing="24">
+
+                    <!-- Location -->
+                    <VerticalStackLayout Spacing="5">
+
+                        <Label
+                            Text="CURRENT WEATHER"
+                            FontSize="11"
+                            FontAttributes="Bold"
+                            CharacterSpacing="1.5"
+                            TextColor="#64748B" />
+
+                        <Label
+                            Text="{Binding Weather.Name, TargetNullValue='Your location'}"
+                            FontSize="23"
+                            FontAttributes="Bold"
+                            TextColor="#1E293B" />
+
+                    </VerticalStackLayout>
+
+                    <BoxView
+                        HeightRequest="1"
+                        Color="#E2E8F0" />
+
+                    <!-- Temperature -->
+                    <Grid
+                        ColumnDefinitions="*,Auto"
+                        ColumnSpacing="20"
+                        Padding="0,8">
+
+                        <VerticalStackLayout
+                            Grid.Column="0"
+                            Spacing="8"
+                            VerticalOptions="Center">
+
+                            <Label
+                                Text="{Binding Weather.Main.Temperature, StringFormat='{0:F1}°C'}"
+                                FontSize="58"
+                                FontAttributes="Bold"
+                                TextColor="#1E293B" />
+
+                            <Label
+                                Text="{Binding Weather.Weather[0].Description, TargetNullValue='--'}"
+                                FontSize="18"
+                                TextColor="#475569" />
+
+                            <Label
+                                Text="{Binding Weather.Main.FeelsLike, StringFormat='Feels like {0:F1}°C'}"
+                                FontSize="14"
+                                TextColor="#64748B" />
+
+                        </VerticalStackLayout>
+
+                        <!-- Weather icon placeholder -->
+                        <Label
+                            Grid.Column="1"
+                            Text="☀"
+                            FontSize="65"
+                            TextColor="#E8A52B"
+                            VerticalOptions="Center"
+                            HorizontalOptions="Center" />
+
+                    </Grid>
+
+                    <BoxView
+                        HeightRequest="1"
+                        Color="#E2E8F0" />
+
+                    <!-- Weather measurements -->
+                    <Grid
+                        ColumnDefinitions="*,*,*"
+                        ColumnSpacing="10">
+
+                        <!-- Humidity -->
+                        <VerticalStackLayout
+                            Grid.Column="0"
+                            Spacing="7">
+
+                            <Label
+                                Text="HUMIDITY"
+                                FontSize="10"
+                                FontAttributes="Bold"
+                                TextColor="#64748B"
+                                HorizontalOptions="Center" />
+
+                            <Label
+                                Text="{Binding Weather.Main.Humidity, StringFormat='{0}%'}"
+                                FontSize="19"
+                                FontAttributes="Bold"
+                                TextColor="#1E293B"
+                                HorizontalOptions="Center" />
+
+                        </VerticalStackLayout>
+
+                        <!-- Wind -->
+                        <VerticalStackLayout
+                            Grid.Column="1"
+                            Spacing="7">
+
+                            <Label
+                                Text="WIND SPEED"
+                                FontSize="10"
+                                FontAttributes="Bold"
+                                TextColor="#64748B"
+                                HorizontalOptions="Center" />
+
+                            <Label
+                                Text="{Binding Weather.Wind.Speed, StringFormat='{0:F1} m/s'}"
+                                FontSize="19"
+                                FontAttributes="Bold"
+                                TextColor="#1E293B"
+                                HorizontalOptions="Center" />
+
+                        </VerticalStackLayout>
+
+                        <!-- Feels like -->
+                        <VerticalStackLayout
+                            Grid.Column="2"
+                            Spacing="7">
+
+                            <Label
+                                Text="FEELS LIKE"
+                                FontSize="10"
+                                FontAttributes="Bold"
+                                TextColor="#64748B"
+                                HorizontalOptions="Center" />
+
+                            <Label
+                                Text="{Binding Weather.Main.FeelsLike, StringFormat='{0:F1}°C'}"
+                                FontSize="19"
+                                FontAttributes="Bold"
+                                TextColor="#1E293B"
+                                HorizontalOptions="Center" />
+
+                        </VerticalStackLayout>
+
+                    </Grid>
+
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Footer -->
+            <Label
+                Text="Weather data provided by OpenWeather"
+                FontSize="12"
+                TextColor="#94A3B8"
                 HorizontalOptions="Center" />
-
-            <Label
-                Text="Latitude"
-                FontAttributes="Bold" />
-
-            <Label
-                Text="{Binding Latitude, StringFormat='{0:F6}'}"
-                FontSize="18" />
-
-            <Label
-                Text="Longitude"
-                FontAttributes="Bold" />
-
-             
-<Label
-    Text="Current Weather"
-    FontSize="24"
-    FontAttributes="Bold"
-    HorizontalOptions="Center" />
-
-<Label
-    Text="{Binding Weather.Name}"
-    FontSize="22"
-    HorizontalOptions="Center" />
-
-<Label
-    Text="{Binding Weather.Main.Temperature, StringFormat='{0:F1} °C'}"
-    FontSize="40"
-    FontAttributes="Bold"
-    HorizontalOptions="Center" />
-
-<Label
-    Text="{Binding Weather.Weather[0].Description}"
-    FontSize="18"
-    HorizontalOptions="Center" />
-
-<Label
-    Text="{Binding Weather.Main.FeelsLike, StringFormat='Feels like {0:F1} °C'}" />
-
-<Label
-    Text="{Binding Weather.Main.Humidity, StringFormat='Humidity: {0}%'}" />
-
-<Label
-    Text="{Binding Weather.Wind.Speed, StringFormat='Wind speed: {0} m/s'}" />
-   
-
-            <Label
-                Text="{Binding Longitude, StringFormat='{0:F6}'}"
-                FontSize="18" />
 
         </VerticalStackLayout>
     </ScrollView>
 
 </ContentPage>
-
