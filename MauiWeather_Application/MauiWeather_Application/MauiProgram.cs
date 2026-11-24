@@ -1,5 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
-
+using MauiWeather_Application.Services;
+using MauiWeather_Application.ViewModels;
+using MauiWeather_Application.Services;
+using MauiWeather_Application.ViewModels;
 namespace MauiWeather_Application
 {
     public static class MauiProgram
@@ -7,6 +10,11 @@ namespace MauiWeather_Application
         public static MauiApp CreateMauiApp()
         {
             var builder = MauiApp.CreateBuilder();
+            builder.Services.AddSingleton<IGeolocationService, GeolocationService>();
+            builder.Services.AddTransient<MainPageViewModel>();
+            builder.Services.AddTransient<MainPage>();
+            builder.Services.AddSingleton<AppShell>();
+            
             builder
                 .UseMauiApp<App>()
                 .ConfigureFonts(fonts =>
